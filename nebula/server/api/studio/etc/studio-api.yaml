@@ -1,0 +1,20 @@
+Name: studio-api
+Host: 0.0.0.0
+Port: 9000
+MaxBytes: 1073741824
+Timeout: 60000
+Log: 
+  Mode: file
+  Level: error
+  KeepDays: 7
+Debug:
+  Enable: false
+Auth:
+  TokenName: "studio_token"
+  AccessSecret: "login_secret"
+  AccessExpire: 259200
+File:
+  UploadDir: "./data/upload/"
+  TasksDir: "./data/tasks"
+  SqliteDbFilePath: "./data/tasks.db"
+  TaskIdPath: "./data/taskId.data"

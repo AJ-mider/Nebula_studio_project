@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "nebula-studio.name" . }}
+  labels:
+    {{- include "nebula-studio.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "nebula-studio.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "nebula-studio.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: nebula-studio
+          command:
+            - ./server
+          image: "{{ .Values.image.nebulaStudio.name }}:{{ .Values.image.nebulaStudio.version }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: UPLOAD_DIR
+              value: /data
+          ports:
+            - containerPort: 7001
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+            httpGet:
+              path: /
+              port: 7001
+          readinessProbe:
+            failureThreshold: 3
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+            httpGet:
+              path: /
+              port: 7001
+          resources:
+            {{- toYaml .Values.resources.nebulaStudio | nindent 12 }}
+          volumeMounts:
+            - name: upload-data
+              mountPath: /data
+            - name: studio-config
+              mountPath: /app/etc
+              readOnly: true
+      volumes:
+        - name: studio-config
+          configMap:
+            name: {{ include "nebula-studio.name" . }}-config
+            items:
+              - key: studio-api.yaml
+                path: studio-api.yaml
+        - name: upload-data
+          persistentVolumeClaim:
+            claimName: {{ include "nebula-studio.name" . }}-data
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

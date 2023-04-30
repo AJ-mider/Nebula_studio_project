@@ -1,0 +1,38 @@
+replicaCount: 1
+
+image:
+  pullPolicy: IfNotPresent
+  nebulaStudio:
+    name: vesoft/nebula-graph-studio
+    version: v3.4.1
+
+imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 7001
+  nodePort: 32701
+
+resources:
+  nebulaStudio:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 200m
+      memory: 256Mi
+
+persistent:
+  storageClassName: ""
+  size: 5Gi
+
+podAnnotations: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

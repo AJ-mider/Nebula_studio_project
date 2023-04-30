@@ -1,0 +1,11 @@
+docs
+logs
+run
+scripts
+.git
+node_modules
+typings
+tmp
+.gitignore
+README.md
+docker/
