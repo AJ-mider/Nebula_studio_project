@@ -1,0 +1,28 @@
+{
+  "properties": [
+    {
+      "name": "neo4j.password",
+      "type": "java.lang.String",
+      "description": "Description for neo4j.password."
+    },
+    {
+      "name": "neo4j.username",
+      "type": "java.lang.String",
+      "description": "Description for neo4j.username."
+    },
+    {
+      "name": "neo4j.uri",
+      "type": "java.lang.String",
+      "description": "Description for neo4j.uri."
+    },
+    {
+      "name": "nebular.reconnecte",
+      "type": "java.lang.Boolean",
+      "description": "Description for nebular.reconnect."
+    },
+    {
+      "name": "nebular.port",
+      "type": "java.lang.Integer",
+      "description": "Description for nebular.port."
+    }
+  ] }
